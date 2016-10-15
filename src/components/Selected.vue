@@ -38,3 +38,25 @@ export default {
   }
 }
 </script>
+<style>
+  ul {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+  width: 50%;
+  }
+
+  li {
+    padding-left: 1em;
+    text-indent: -1em;
+  }
+
+  li:before {
+    content: "+";
+    padding-right: 5px;
+  }
+  li:hover {
+    color: white;
+    background-color: black;
+  }
+</style>
