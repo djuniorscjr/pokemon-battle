@@ -15,4 +15,4 @@ npm run dev
 npm run build
 ```
 
-https://pokemon-battleapp.herokuapp.com/ P.S. Disable https in your browser
+https://pokemon-battleapp.herokuapp.com/

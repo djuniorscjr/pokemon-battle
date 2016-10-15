@@ -1,34 +1,50 @@
 <template>
-  <div id="app" class="container">
-    <section v-if="loading && player == 1" class="content"> 
-      CARREGANDO
-    </section>
-    <section v-else class="content">
-      <h1>Player 1</h1>
-      <pokemon :profile="playerOne" v-if="playerOne.name"></pokemon>
-      <selected v-if="!playerOne.name" :pokemons="pokemons" @selected="onSelected" :player="1"></selected>
-    </section>
-    <section>
-       <img class="vs" src="./assets/vs.png"> 
-       <button v-show="playerOne.name!=='' && playerTwo.name!=='' && message==''" class="btn" @click="play">Jogar</button>
-       <button v-show="message!==''" class="btn" @click="init">Voltar</button> 
-       <strong>{{message}}</strong>
-    </section>
-    <section v-if="loading && player == 2" class="sidebar">
-      CARREGANDO
-    </section>
-    <section v-else class="sidebar">
-      <h1>Player 2</h1>
-      <pokemon :profile="playerTwo" v-if="playerTwo.name"></pokemon>
-      <selected v-if="!playerTwo.name" :pokemons="pokemons" @selected="onSelected" :player="2"></selected>
-    </section>
+  <div id="app" class="container-fluid">
+    <div class="jumbotron">
+        <h1>Batalha de Pokemons</h1>
+        <p class="lead">Busque e selecione um pokemon para cada jogador e inicie a batalha. Bom jogo!</p>
+      </div>
+    <div class="row">
+      <div class="col-lg-4">
+        <h1><span class="label label-default">Jogador 1</span></h1>
+        <div v-if="loading || player == 1"> 
+          CARREGANDO
+        </div>
+        <div v-else>
+          <pokemon :profile="playerOne" v-if="playerOne.name"></pokemon>
+          <selected v-if="!playerOne.name" :pokemons="pokemons" @selected="onSelected" :player="1"></selected>
+        </div>  
+      </div>
+      <div class="col-lg-4">
+        <div>
+          <img class="vs" src="./assets/vs.png">
+          <p>
+            <button v-show="playerOne.name!=='' && playerTwo.name!=='' && message==''" class="btn btn-primary" @click="play">Iniciar</button>
+            <button v-show="message!==''" class="btn btn-default" @click="init">Voltar</button> 
+          </p>
+          <div class="alert alert-success" v-show="message!==''">
+            {{message}}
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+          <h1><span class="label label-default">Jogador 2</span></h1>
+          <div v-if="loading || player == 2">
+            CARREGANDO
+          </div>
+          <div v-else>
+            <pokemon :profile="playerTwo" v-if="playerTwo.name"></pokemon>
+            <selected v-if="!playerTwo.name" :pokemons="pokemons" @selected="onSelected" :player="2"></selected>
+          </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import Selected from './components/Selected'
 import Pokemon from './components/Pokemon'
-const URL = 'http://pokeapi.co'
+const URL = '//pokeapi.co'
 export default {
   data () {
     return {
@@ -57,7 +73,6 @@ export default {
   methods: {
     onSelected (item, player) {
       this.player = player
-      this.loading = true
       this.$http.get(URL + '/' + item.resource_uri)
         .then((resp) => {
           this.setImage(resp.data.sprites, item.name, resp.data.attack, resp.data.defense)
@@ -69,8 +84,6 @@ export default {
       if (sprites.length > 0) {
         this.getImage(sprites[0].resource_uri).then((resImg) => {
           this.setPlayer(name, attack, defense, resImg.image)
-        }).then(_ => {
-          this.loading = false
         })
       } else {
         this.setPlayer(name, attack, defense, undefined)
@@ -90,7 +103,8 @@ export default {
       gamer.name = name
       gamer.attack = attack
       gamer.defense = defense
-      gamer.image = img === undefined ? undefined : URL + img
+      gamer.image = img === undefined ? './assets/img.png' : URL + img
+      this.player = 0
     },
     play () {
       let one = this.playerTwo.defense / this.playerOne.attack
@@ -112,20 +126,15 @@ export default {
 }
 </script>
 <style>
-@import url(http://fonts.googleapis.com/css?family=Open+Sans);
-
-body { 
-  font-family: 'Open Sans', sans-serif;
-  color: #666;
-}
-.container {
+.container-fluid {
 	padding: 5px;
-	width: 960px;
 	margin: 20px auto;
 }
-.vs {
-  width: 10%;
+.row {
   text-align: center;
+}
+.vs {
+  width: 50%;
 }
 
 </style>
