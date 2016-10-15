@@ -1,7 +1,7 @@
 {
-  "name": "vue-r",
+  "name": "pokemon-battle",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "Pokemon Battle, testing vue.js",
   "author": "Domingos Junior <djunior_s@hotmail.com>",
   "private": true,
   "scripts": {
