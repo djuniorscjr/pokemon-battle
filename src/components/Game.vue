@@ -1,27 +1,27 @@
 <template>
     <div class="row">
-      <player :loading="loading" :profile="playerOne" :pokemons="pokemons" 
+      <player :loading="loading" :profile="playerOne" :pokemons="pokemons"
           :player="1" @player="setPlayer"/>
       <div class="col-lg-4">
         <div>
           <img class="vs" src="../assets/vs.png">
           <p>
             <button v-show="playerOne.name!=='' && playerTwo.name!=='' && message==''" class="btn btn-primary" @click="play">Iniciar</button>
-            <button v-show="message!==''" class="btn btn-default" @click="init">Voltar</button> 
+            <button v-show="message!==''" class="btn btn-default" @click="init">Voltar</button>
           </p>
           <div class="alert alert-success" v-show="message!==''">
             {{message}}
           </div>
         </div>
       </div>
-      <player :loading="loading" :profile="playerTwo" :pokemons="pokemons" 
+      <player :loading="loading" :profile="playerTwo" :pokemons="pokemons"
           :player="2" @player="setPlayer"/>
     </div>
 </template>
 
 <script>
 import Player from './Player'
-const URL = '//pokeapi.co'
+import Service from '../service/'
 export default {
   data () {
     return {
@@ -37,11 +37,13 @@ export default {
   },
   mounted () {
     this.loading = true
-    this.$http.get(URL + '/api/v1/pokedex/1/')
+    Service.all()
       .then((success) => {
-        this.pokemons = success.data.pokemon
-      }, (error) => {
-        console.log('error', error)
+        if (success) {
+          this.pokemons = success
+        } else {
+          this.message = 'Servidor off'
+        }
       }).then(_ => {
         this.loading = false
       })
@@ -52,7 +54,7 @@ export default {
       gamer.name = name
       gamer.attack = attack
       gamer.defense = defense
-      gamer.image = img === undefined ? './assets/img.png' : URL + img
+      gamer.image = img === undefined ? '../assets/img.png' : '//pokeapi.co' + img
     },
     play () {
       let one = this.playerTwo.defense / this.playerOne.attack
