@@ -1,19 +1,15 @@
 <template>
   <div id="app" class="container-fluid">
     <div class="jumbotron">
-        <h1>Batalha de Pokemons</h1>
-        <p class="lead">Busque e selecione um pokemon para cada jogador e inicie a batalha. Bom jogo!</p>
-      </div>
+      <h1>Batalha de Pokemons</h1>
+      <p class="lead">Busque e selecione um pokemon para cada jogador e inicie a batalha. Bom jogo!</p>
+    </div>
     <div class="row">
       <div class="col-lg-4">
         <h1><span class="label label-default">Jogador 1</span></h1>
-        <div v-if="loading || player == 1"> 
-          CARREGANDO
-        </div>
-        <div v-else>
-          <pokemon :profile="playerOne" v-if="playerOne.name"></pokemon>
-          <selected v-if="!playerOne.name" :pokemons="pokemons" @selected="onSelected" :player="1"></selected>
-        </div>  
+        <loading :bool="loading || player == 1"></loading>
+        <pokemon :profile="playerOne" v-if="playerOne.name"></pokemon>
+        <selected :disabled="loading || player == 1" v-if="!playerOne.name" :pokemons="pokemons" @selected="onSelected" :player="1"></selected>
       </div>
       <div class="col-lg-4">
         <div>
@@ -28,14 +24,10 @@
         </div>
       </div>
       <div class="col-lg-4">
-          <h1><span class="label label-default">Jogador 2</span></h1>
-          <div v-if="loading || player == 2">
-            CARREGANDO
-          </div>
-          <div v-else>
-            <pokemon :profile="playerTwo" v-if="playerTwo.name"></pokemon>
-            <selected v-if="!playerTwo.name" :pokemons="pokemons" @selected="onSelected" :player="2"></selected>
-          </div>
+        <h1><span class="label label-default">Jogador 2</span></h1>
+        <loading :bool="loading || player == 2"></loading>
+        <pokemon :profile="playerTwo" v-if="playerTwo.name"></pokemon>
+        <selected :disabled="loading || player == 2" v-if="!playerTwo.name" :pokemons="pokemons" @selected="onSelected" :player="2"></selected>
       </div>
     </div>
   </div>
@@ -44,6 +36,7 @@
 <script>
 import Selected from './components/Selected'
 import Pokemon from './components/Pokemon'
+import Loading from './components/Loading'
 const URL = '//pokeapi.co'
 export default {
   data () {
@@ -57,7 +50,7 @@ export default {
     }
   },
   components: {
-    Selected, Pokemon
+    Selected, Pokemon, Loading
   },
   mounted () {
     this.loading = true

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input v-model="search" placeholder="Buscar pokemon...">
+    <input :disabled="disabled" v-model="search" placeholder="Buscar pokemon...">
     <ul class="dropdown">
         <li v-for="pokemon in filteredItem" @click="selectedPokemon(pokemon)">
           <span>{{pokemon.name}}</span>
@@ -19,7 +19,8 @@ export default {
   },
   props: {
     pokemons: Array,
-    player: Number
+    player: Number,
+    disabled: Boolean
   },
   computed: {
     filteredItem () {
