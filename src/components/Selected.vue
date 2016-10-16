@@ -19,7 +19,6 @@ export default {
   },
   props: {
     pokemons: Array,
-    player: Number,
     disabled: Boolean
   },
   computed: {
@@ -34,7 +33,7 @@ export default {
   methods: {
     selectedPokemon (pokemon) {
       this.search = ''
-      this.$emit('selected', pokemon, this.player)
+      this.$emit('selected', pokemon)
     }
   }
 }
