@@ -54,7 +54,7 @@ export default {
       gamer.name = name
       gamer.attack = attack
       gamer.defense = defense
-      gamer.image = img === undefined ? '../assets/img.png' : '//pokeapi.co' + img
+      gamer.image = img === undefined ? img : '//pokeapi.co' + img
     },
     play () {
       let one = this.playerTwo.defense / this.playerOne.attack

@@ -28,8 +28,6 @@ export default {
   box-shadow:inset 5px -10px 50px -20px #000;
   animation: loading 1s infinite;
 }
-
-
 @keyframes loading {
   0%, 100% {
     transform: translateY(0px);

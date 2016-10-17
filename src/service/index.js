@@ -17,28 +17,26 @@ export default {
 
   getPokemon (resource) {
     return Vue.http.get(URL + '/' + resource)
-      .then((success) => {
-        let obj = success.data
-        if (obj.sprites.length > 0) {
-          return this.getImage(obj.sprites[0].resource_uri)
-            .then((resp) => {
-              return {
-                attack: obj['attack'],
-                defense: obj['defense'],
-                image: resp['image']
-              }
-            })
-        } else {
-          return {
-            attack: obj['attack'],
-            defense: obj['defense'],
-            image: undefined
-          }
-        }
-      }, (error) => {
+      .then((success) => this.setPokemonToPlayer(success),
+      (error) => {
         console.log('error', error)
         return false
       })
+  },
+
+  setPokemonToPlayer (obj) {
+    let result = {}
+    result.attack = obj.data.attack
+    result.defense = obj.data.defense
+    if (obj.data.sprites.length > 0) {
+      return this.getImage(obj.data.sprites[0].resource_uri)
+        .then((resp) => {
+          result.image = resp.image
+          return result
+        })
+    } else {
+      return result
+    }
   },
 
   getImage (path) {

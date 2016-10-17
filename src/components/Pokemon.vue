@@ -1,8 +1,7 @@
 <template>
   <div>
-    <a href="#" class="thumbnail">
-      <img v-bind:src="profile.image" />
-    </a>
+    <img src="../assets/img.png" v-if="profile.image == undefined" />
+    <img :src="profile.image" v-else />
     <p>
       <span class="label label-info">{{profile.name}}</span>
     </p>
